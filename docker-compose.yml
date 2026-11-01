@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: docsync-postgres
+    environment:
+      POSTGRES_DB: docsync
+      POSTGRES_USER: docsync
+      POSTGRES_PASSWORD: docsync
+    ports:
+      - "5432:5432"
+    volumes:
+      - docsync-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U docsync"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  docsync-pgdata:

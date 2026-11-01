@@ -1,0 +1,108 @@
+# DocSync Application Configuration
+spring:
+  application:
+    name: docsync
+
+  # JPA Configuration
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+        jdbc:
+          time_zone: UTC
+
+  # Database Configuration
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/docsync}
+    username: ${DATABASE_USERNAME:docsync}
+    password: ${DATABASE_PASSWORD:docsync}
+    hikari:
+      maximum-pool-size: ${DATABASE_POOL_SIZE:10}
+      minimum-idle: 2
+      connection-timeout: 10000
+      idle-timeout: 300000
+      max-lifetime: 600000
+
+  # Flyway Configuration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    validate-on-migrate: true
+
+  # Jackson Configuration
+  jackson:
+    serialization:
+      write-dates-as-timestamps: false
+      indent-output: false
+    deserialization:
+      fail-on-unknown-properties: false
+    default-property-inclusion: non_null
+
+# Server Configuration
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-stacktrace: never
+    include-message: always
+    include-binding-errors: always
+  shutdown: graceful
+
+# Actuator Configuration
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+      show-components: when-authorized
+  health:
+    db:
+      enabled: true
+    diskspace:
+      enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    root: INFO
+    com.docsync: ${LOG_LEVEL:INFO}
+    org.springframework.security: WARN
+    org.hibernate.SQL: WARN
+    org.flywaydb: INFO
+
+# DocSync Custom Properties
+docsync:
+  security:
+    encryption-key: ${ENCRYPTION_KEY:change-me-in-production}
+    # Must be at least 32 bytes. Replace in every deployed environment.
+    jwt-secret: ${JWT_SECRET:dev-only-jwt-secret-change-me-0123456789abcdef}
+    access-token-ttl-minutes: ${JWT_ACCESS_TTL_MINUTES:15}
+  github:
+    app-id: ${GITHUB_APP_ID:}
+    private-key: ${GITHUB_APP_PRIVATE_KEY:}
+    webhook-secret: ${GITHUB_WEBHOOK_SECRET:}
+    api-url: ${GITHUB_API_URL:https://api.github.com}
+    oauth:
+      client-id: ${GITHUB_OAUTH_CLIENT_ID:}
+      client-secret: ${GITHUB_OAUTH_CLIENT_SECRET:}
+  repository:
+    workspace-root: ${REPOSITORY_WORKSPACE_ROOT:./data/workspaces}
+    clone-host: ${REPOSITORY_CLONE_HOST:github.com}
+    git-timeout-seconds: ${REPOSITORY_GIT_TIMEOUT_SECONDS:300}
+  llm:
+    provider: ${LLM_PROVIDER:none}
+    api-key: ${LLM_API_KEY:}
+    model: ${LLM_MODEL:gpt-4}
+    timeout-seconds: ${LLM_TIMEOUT_SECONDS:60}
+    max-retries: ${LLM_MAX_RETRIES:3}
+  jobs:
+    poll-interval-seconds: ${JOB_POLL_INTERVAL:5}
+    max-retries: ${JOB_MAX_RETRIES:3}
+    timeout-minutes: ${JOB_TIMEOUT_MINUTES:30}
