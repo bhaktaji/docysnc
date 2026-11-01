@@ -76,6 +76,40 @@ The frontend runs on `http://localhost:5173` and proxies `/api` to the backend o
   `DELETE .../{id}`
 - `POST /api/v1/webhooks/github` (HMAC-SHA256 signature, no JWT)
 
+## GitHub App Integration
+
+DocSync uses a GitHub App for repository access. Configure these environment variables before starting the backend:
+
+- `GITHUB_APP_ID`
+- `GITHUB_APP_PRIVATE_KEY` (PEM text, not a file path)
+- `GITHUB_WEBHOOK_SECRET`
+- `GITHUB_API_URL` (optional, defaults to `https://api.github.com`)
+- `DATABASE_URL`
+- `DATABASE_USERNAME`
+- `DATABASE_PASSWORD`
+- `JWT_SECRET`
+- `ENCRYPTION_KEY`
+
+Webhook endpoint:
+
+```text
+POST /api/v1/webhooks/github
+```
+
+For local development with Smee, point GitHub to:
+
+```text
+https://smee.io/IBsk2fCOLoO40Ga0
+```
+
+and forward to:
+
+```text
+http://localhost:8080/api/v1/webhooks/github
+```
+
+Known limitation: Smee forwarding currently fails with `UND_ERR_NOT_SUPPORTED: expect header not supported`. Use an alternative tunnel if needed.
+
 ## Documentation
 
 See the [docs/](docs/) directory for comprehensive project documentation:
