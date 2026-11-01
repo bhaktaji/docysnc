@@ -87,9 +87,10 @@ Not verified:
 
 ## Git delivery status
 
-- Dedicated branch `qa/comprehensive-acceptance`: not created
-- Commits: not created
-- Push: not performed
-- Pull request: not opened
-
-Reason: `git` is not installed and no GitHub token is available in the environment. The repository's source-of-truth remote is https://github.com/bhaktaji/docysnc.
+- Dedicated branch: `qa/comprehensive-acceptance`
+- Initial commit SHA: `78cb01c967abe1ec88a21cf1c7c3f33120993321`
+- Delivery commit SHA: `4218cf3b3a200a36c6e4b90c5af05cd8a16d22d4`
+- Push: completed to `origin/qa/comprehensive-acceptance`
+- Pull request: https://github.com/bhaktaji/docysnc/pull/1
+- Default branch `main` was populated from the same initial commit to provide a valid PR base; it was not force-pushed or overwritten from prior content because the remote repository was empty.
+- The pull request was not merged.
