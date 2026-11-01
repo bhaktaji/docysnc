@@ -85,6 +85,32 @@ Not verified:
 - Docker/PostgreSQL is unavailable, so Flyway migrations V1-V6 are unverified against PostgreSQL.
 - No real GitHub App or LLM credentials are configured, so those integrations remain mocked/unverified.
 
+## PostgreSQL and real Git verification
+
+### PostgreSQL / Flyway
+- PostgreSQL client and server version: 16.15
+- Server connection: localhost:5432, TCP test succeeded
+- Isolated database: `docsync_qa`
+- Dedicated user: `docsync_qa`
+- Flyway migrations V1-V6: all successful
+- Application started against PostgreSQL with `spring.jpa.hibernate.ddl-auto=validate`
+- Flyway schema history contains 6 successful migrations
+- Defect found and fixed: V5 migration was missing `updated_at` and `version` columns for `code_entities` and `documentation_code_references`, which extend `BaseEntity`; migration was corrected.
+
+### Real Git verification
+- SSH authentication to `git@github.com`: host key verification initially failed; after adding GitHub host keys, authentication failed with `Permission denied (publickey)`. No private SSH key is available or requested.
+- HTTPS fallback clone of `https://github.com/bhaktaji/pos-system.git` succeeded.
+- Repository metadata:
+  - Remote: `https://github.com/bhaktaji/pos-system.git`
+  - Default branch: `main`
+  - HEAD: `aad967ee89c08e34c14e4ba131496b0142e13fc7`
+- `git fetch --all` succeeded.
+- Temporary commit test:
+  - Base commit: `aad967ee89c08e34c14e4ba131496b0142e13fc7`
+  - Head commit: `acdc163a51671cd0ae4954b6afba28f2e54dee56`
+  - Detected change: `A docsync-qa-test.txt`
+- The isolated test workspace was cleaned up after verification.
+
 ## Git delivery status
 
 - Dedicated branch: `qa/comprehensive-acceptance`
