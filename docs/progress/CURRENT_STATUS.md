@@ -15,7 +15,10 @@
 - **Known blockers:**
   - Docker unavailable locally, so PostgreSQL/Flyway migrations (V1–V6) are unverified against a real database.
   - No `git` binary on this machine, so real clone/fetch is not runtime-verified.
-  - No real GitHub App or LLM credentials; GitHub HTTP and LLM calls are mocked in tests.
+  - GitHub App authentication and repository metadata were verified against GitHub.
+- Smee webhook forwarding is blocked by `UND_ERR_NOT_SUPPORTED: expect header not supported`.
+- Installation `177539978` is persisted as `PENDING` because no DocSync user is linked to GitHub ID `29664492`.
+- No real LLM credentials; LLM integration remains mocked/unverified.
   - Repository-connected frontend workflows depend on GitHub credentials and could not be fully exercised.
 
 See [IMPLEMENTATION_PROGRESS.md](../IMPLEMENTATION_PROGRESS.md) for completed work and
